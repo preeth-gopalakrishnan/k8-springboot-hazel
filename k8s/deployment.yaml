@@ -22,17 +22,32 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: springboot-hazel-embedded-svc
+  name: springboot-hazel-embedded-multicast-svc
   labels:
     app: springboot-hazel-embedded
 spec:
   type: ClusterIP
   ports:
-  - port: 8080
-    protocol: TCP
-    name: http
   - port: 5701
     protocol: TCP
     name: hazelcast    
   selector:
     app: springboot-hazel-embedded
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: springboot-hazel-embedded-http-svc
+  labels:
+    app: springboot-hazel-embedded
+spec:
+  type: NodePort
+  ports:
+  - port: 31237
+    nodePort: 30126
+    targetPort: 8081
+    protocol: TCP
+    name: http          
+  selector:
+    app: springboot-hazel-embedded
+
