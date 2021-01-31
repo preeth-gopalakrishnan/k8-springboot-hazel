@@ -1,0 +1,38 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: springboot-hazel-embedded-deployment
+  labels:
+    app: springboot-hazel-embedded
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: springboot-hazel-embedded
+  template:
+    metadata:
+      labels:
+        app: springboot-hazel-embedded
+    spec:
+      containers:
+      - name: k8-springboot-hazel
+        image: k8-springboot-hazel
+        imagePullPolicy: Never
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: springboot-hazel-embedded-svc
+  labels:
+    app: springboot-hazel-embedded
+spec:
+  type: ClusterIP
+  ports:
+  - port: 8080
+    protocol: TCP
+    name: http
+  - port: 5701
+    protocol: TCP
+    name: hazelcast    
+  selector:
+    app: springboot-hazel-embedded
